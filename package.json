@@ -1,0 +1,18 @@
+{
+  "name": "insitu.backbone",
+  "description": "InSitu backbone extension",
+  "homepage": "http://www.insitu.de",
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/InSitu-Software/insitu.backbone.js"
+  },
+  "main": "insitu.backbone.js",
+  "version": "0.1",
+  "dependencies": {
+    "underscore": ">=1.2.3",
+  },
+  "license": "MIT",
+  "files": [
+    "insitu.backbone.js",
+  ]

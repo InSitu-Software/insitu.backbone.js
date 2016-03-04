@@ -1,0 +1,1 @@
+InSitu. extensions for backbone.js (https://github.com/jashkenas/backbone/).
