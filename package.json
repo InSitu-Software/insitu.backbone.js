@@ -8,12 +8,12 @@
     "url": "git://github.com/InSitu-Software/insitu.backbone.js"
   },
   "main": "insitu.backbone.js",
-  "version": "0.1",
+  "version": "0.1.1",
   "dependencies": {
-    "underscore": ">=1.2.3",
+    "underscore": ">=1.2.3"
   },
   "license": "MIT",
   "files": [
-    "insitu.backbone.js",
+    "insitu.backbone.js"
   ]
 }
