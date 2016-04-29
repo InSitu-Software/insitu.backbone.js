@@ -111,17 +111,17 @@ _.extend(Backbone.Collection.prototype, {
             disableModelEventListener: true
         });
         var collection = new this.constructor(attr, options);
-        collection._disableModelEventListenerFlag = (options && options.disableModelEventListener);
+        collection.disableModelEventListenerFlag = (options && options.disableModelEventListener);
         return collection;
     },
 
     // Yeah... srsly... wupupupupu
     _originalAddReference: Backbone.Collection.prototype._addReference,
-    _disableModelEventListenerFlag: false,
+    disableModelEventListenerFlag: false,
     _addReference: function(model, options) {
         this._originalAddReference.call(this, model, options);
 
-        if (this._disableModelEventListenerFlag) {
+        if (this.disableModelEventListenerFlag || options.disableModelEventListener) {
             model.off('all', this._onModelEvent, this);
         }
     },
