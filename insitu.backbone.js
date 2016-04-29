@@ -77,10 +77,6 @@ _.extend(Backbone.Collection.prototype, {
         return _.unique(this.pluck(attr));
     },
 
-    pluckUnique: function(attr){
-        return _.unique(this.pluck(attr));
-    },
-
     // accepts parameter array
     multiPluck: function(attrs) {
         return this.invoke("pick",attrs);
