@@ -298,7 +298,22 @@ _.extend(Backbone.View.prototype, {
                 _.keys(defaults)
             )
         );
+    },
 
+    getTemplateById: function(id){
+        if(id.charAt(0) === "#"){
+            id = id.substring(1);
+        }
+
+        var $id = $("#"+id);
+        if($id.length === 1){
+            return _.template($id.html());
+        }
+
+        // here we can hook a generic template getter
+        // but for the moment we simply return an empty template
+        console.log("No template for "+id);
+        return _.template("");
     }
 
 });
