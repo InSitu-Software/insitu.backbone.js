@@ -126,6 +126,18 @@ _.extend(Backbone.Collection.prototype, {
         }
     },
 
+    customClone: function() {
+    	return this.reWrap(
+			this.models,
+			{
+				model: this.model,
+				comparator: this.comparator,
+				disableModelEventListener: true
+			}
+		);
+    },
+
+
     filterById: function(idArray) {
         var result = [];
         _.each(idArray, function(id) {
