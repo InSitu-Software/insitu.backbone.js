@@ -289,6 +289,31 @@ _.extend(Backbone.View.prototype, {
         }
     },
 
+    _genericFillWithDefault: function(extendable, data, defaults){
+        if( _.isUndefined(extendable) || _.isUndefined(data) || _.isUndefined(defaults) ){
+            return false;
+        }
+
+        defaults = _.isFunction(defaults)
+                    ? defaults()
+                    : defaults;
+
+        if( _.isString( extendable ) ){
+            if( _.isUndefined( this[extendable] ) || !_.isObject(this[extendable]) ){
+                this[extendable] = {};
+            }
+
+            extendable = this[extendable];
+        }
+
+        _.extend(
+            extendable,
+            _.pick(
+                _.defaults( data, defaults ),
+                _.keys( defaults )
+            )
+        );
+    },
 
     _fillWithDefault: function(extendable, data, context){
         if(_.isUndefined(extendable) || _.isUndefined(data)){
@@ -298,18 +323,13 @@ _.extend(Backbone.View.prototype, {
         context = context || data.context || this;
 
         var defaults = _.isFunction(this.defaults) ? this.defaults() : this.defaults;
-
-        // copy all properties "allowed" by defaults with set values to this
         _.extend(
-            extendable,
-            _.pick(
-                _.defaults(
-                    data,
-                    _.extend( defaults, {context: context} )
-                ),
-                _.keys(defaults)
-            )
+            defaults,
+            {context: context}
         );
+
+        this._genericFillWithDefault( extendable, data, defaults );
+
     },
 
     getTemplateById: function(id){
