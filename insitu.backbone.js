@@ -276,15 +276,25 @@ _.extend(Backbone.Collection.prototype, {
 
 _.extend(Backbone.View.prototype, {
 
-    reSetElement: function(new_el) {
+    reSetElement: function(new_el, options) {
+    	options = _.defaults(options || {}, {
+    		isAttached: undefined
+		});
+
         // preserve DOM reference
         var $old_el = this.$el;
 
         // insert new_el
         this.setElement(new_el);
 
+        if (_.isUndefined(options.isAttached)) {
+        	options.isAttached = $old_el[0]
+        		? $.contains(document, $old_el[0])
+        		: false;
+        }
+
         // if old DOM elemt is within DOM: replace with new element
-        if ($.contains(document, $old_el[0])) {
+        if ($old_el[0] && options.isAttached) {
             $old_el.replaceWith(this.$el);
         }
     },
