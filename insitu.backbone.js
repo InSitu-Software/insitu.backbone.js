@@ -150,6 +150,12 @@ _.extend(Backbone.Collection.prototype, {
     },
 
 
+    customWithout: function(values, options){
+        var result = this.without(values);
+        return this.reWrap(result, options);
+    },
+
+
     // reWrapp & alternative array support
     customWhere: function(param, options) {
         // console.time("customWhere");
