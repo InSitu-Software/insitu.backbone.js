@@ -1,4 +1,4 @@
-l_.extend(Backbone.Model.prototype, {
+_.extend(Backbone.Model.prototype, {
 
     hasTemporaryId: function() {
         return smartyApp.Validation.isTemporaryId(this.id);
