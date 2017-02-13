@@ -1,4 +1,4 @@
-_.extend(Backbone.Model.prototype, {
+l_.extend(Backbone.Model.prototype, {
 
     hasTemporaryId: function() {
         return smartyApp.Validation.isTemporaryId(this.id);
@@ -58,7 +58,24 @@ _.extend(Backbone.Model.prototype, {
         });
 
         this.trigger('destroy', this, this.collection, options);
-    }
+    },
+
+    /*
+    	to be used within validate()
+
+    	attrs: attribute hash passed to validate
+    	validationObject: {attribute-key: validationResultOrFunction}
+
+    	produces array with erroneous keys as validationError
+     */
+    validateByKey: function(attrs, validationObject) {
+		var erroneous_keys = [];
+    	_.each(validationObject, function(evaluate, key) {
+    		if (_.isFunction(evaluate)) { evaluate = evaluate(attrs); }
+    		if (!evaluate) { erroneous_keys.push(key); }
+    	});
+    	return erroneous_keys.length > 0 ? erroneous_keys : undefined;
+    },
 });
 
 
@@ -356,6 +373,37 @@ _.extend(Backbone.View.prototype, {
         // but for the moment we simply return an empty template
         console.log("No template for "+id);
         return _.template("");
-    }
+    },
+
+    /*
+    	to be used within listenTo(this.model, "change invalid") listener
+
+    	className: css error class
+    	validationResult: Backbone.Model.validationError generate by validateByKey (erroneous keys)
+    	keyElementMap: {validationKey: jQ-Selector}
+
+    	uses validation result to add css error class to corresponding elements
+     */
+    toggleClassByValidateByKey: function(className, validationResult, keyElementMap) {
+    	var addClassElements = [],
+    		removeClassElements = [];
+
+		validationResult = validationResult || [];
+
+		_.each(keyElementMap, function(element_selector, key) {
+			if(_.contains(validationResult, key)) {
+				addClassElements.push(element_selector);
+			} else {
+				removeClassElements.push(element_selector);
+			}
+		});
+
+		if (addClassElements.length > 0) {
+			this.$el.find(addClassElements.join(", ")).addClass(className);
+		}
+		if (removeClassElements.length > 0) {
+			this.$el.find(removeClassElements.join(", ")).removeClass(className);
+		}
+    },
 
 });
