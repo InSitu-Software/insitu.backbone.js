@@ -237,6 +237,12 @@ _.extend(Backbone.Collection.prototype, {
         return this.reWrap(result, options);
     },
 
+    customWithout: function(model, options) {
+    	return this.reWrap(
+    		this.without(model)
+		, options);
+    },
+
     customGroupByMulti: function (values, context, options) {
         if (!values.length) {
             return this;
