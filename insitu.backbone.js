@@ -412,4 +412,36 @@ _.extend(Backbone.View.prototype, {
 		}
     },
 
+    /*
+        To be used within listenTo(this.model, "change invalid") listener. Invokes the corresponding callback
+        if a key is present in the validationResult.
+
+        Params:
+
+        validationResult:   Backbone.Model.validationError generate by validateByKey (erroneous keys)
+        keyCallbackMap:     {validationKey: {context: object, valid: functionName, invalid: functionName}}
+    */
+    invokeCallbackByValidateByKey: function (validationResult, keyCallbackMap) {
+        if (!validationResult || validationResult.length === 0) {
+            return;
+        }
+
+        _.each(keyCallbackMap, function (callbacksAndContext, key) {
+            var context         = callbacksAndContext.context;
+            var validCallback   = callbacksAndContext.valid;
+            var invalidCallback = callbacksAndContext.invalid;
+
+            if (_.contains(validationResult, key)) {
+                if (invalidCallback && _.isFunction(context[invalidCallback])) {
+                    context[invalidCallback]();
+                }
+            } else {
+                if (validCallback && _.isFunction(context[validCallback])) {
+                    context[validCallback]();
+                }
+            }
+
+        });
+    },
+
 });
