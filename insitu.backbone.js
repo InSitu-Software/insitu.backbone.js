@@ -221,12 +221,19 @@ _.extend(Backbone.Collection.prototype, {
     },
 
 
-    customDifference: function(c, options) {
-        if (c instanceof Backbone.Collection) {
-            c = c.models;
-        }
-        var result = this.difference(c);
-        return this.reWrap(result, options);
+    customDifference: function() {
+        var array_map = _.map(arguments, function(arg){
+            if (arg instanceof Backbone.Collection) {
+                return arg.models
+            }
+
+            return arg;
+        })
+
+        var result = this.difference(
+            _.flatten(array_map)
+        );
+        return this.reWrap(result);
     },
 
     customIntersection: function(c, options) {
